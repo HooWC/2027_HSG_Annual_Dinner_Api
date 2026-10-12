@@ -1,0 +1,27 @@
+{
+  "dbName": "AnnualDinner2027",
+  "port": 5308,
+  "concurrency": 25,
+  "ssl": {
+    "enabled": false
+  },
+  "dbConfig": {
+    "server": "HS-SH3",
+    "options": {
+      "port": 1433,
+      "trustServerCertificate": true,
+      "encrypt": false,
+      "enableArithAbort": true,
+      "connectionTimeout": 60000,
+      "requestTimeout": 60000,
+      "cancelTimeout": 5000
+    },
+    "authentication": {
+      "type": "default",
+      "options": {
+        "userName": "sa",
+        "password": "hsonline"
+      }
+    }
+  }
+}
