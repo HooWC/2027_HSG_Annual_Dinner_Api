@@ -10,7 +10,7 @@ const RequestQueue = require('./_helpers/requestQueue');
 const app = express();
 
 
-const checkinQueue = new RequestQueue(config.concurrency || 25);
+const scanQueue = new RequestQueue(config.concurrency || 20, config.maxQueue || 400);
 
 
 
@@ -22,9 +22,8 @@ app.use(cors());
 
 
 
-// Queue only check-in write paths under heavy concurrent scan load
-
-app.use(['/USERS/checkin', '/USERS/scan-checkin'], checkinQueue.middleware());
+// Queue employee lookup and check-in so many scanners share a fixed SQL pool.
+app.use(['/USERS/by-employee', '/USERS/checkin', '/USERS/scan-checkin'], scanQueue.middleware());
 
 
 
@@ -122,7 +121,7 @@ function createServer() {
 
             return http.createServer(app).listen(port, host, () => {
 
-                console.log(`[API] HTTP listening on http://0.0.0.0:${port}`);
+                console.log(`[API] HTTP listening on http://0.0.0.0:${port} (scan queue ${scanQueue.concurrency})`);
 
             });
 

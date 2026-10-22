@@ -1,54 +1,28 @@
 {
-
   "dbName": "AnnualDinner2027",
-
   "port": 5308,
-
   "concurrency": 25,
-
+  "avatarDir": "C:\\Software Project\\annuandinneravatar",
   "ssl": {
-
     "enabled": false
-
   },
-
   "dbConfig": {
-
     "server": "192.168.1.15",
-
     "options": {
-
       "port": 1433,
-
       "trustServerCertificate": true,
-
       "encrypt": false,
-
       "enableArithAbort": true,
-
       "connectionTimeout": 60000,
-
       "requestTimeout": 60000,
-
       "cancelTimeout": 5000
-
     },
-
     "authentication": {
-
       "type": "default",
-
       "options": {
-
         "userName": "sa",
-
         "password": "hsonlinehsgroup1234%"
-
       }
-
     }
-
   }
-
 }
-

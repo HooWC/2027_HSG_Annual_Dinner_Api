@@ -2,6 +2,7 @@
   "dbName": "AnnualDinner2027",
   "port": 5308,
   "concurrency": 25,
+  "avatarDir": "C:\\Software Project\\annuandinneravatar",
   "ssl": {
     "enabled": false
   },

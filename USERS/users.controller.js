@@ -6,11 +6,26 @@ router.get('/ping', (req, res) => {
     res.json({ source: 'api', status: 'ok', route: 'USERS/ping' });
 });
 
+router.get('/avatar/:employeeId', getAvatar);
 router.get('/by-employee/:employeeId', getByEmployeeId);
 router.post('/checkin', checkIn);
 router.post('/scan-checkin', scanCheckIn);
 
 module.exports = router;
+
+function getAvatar(req, res) {
+    const employeeId = (req.params.employeeId || '').trim();
+    const filePath = usersService.findAvatarFile(employeeId);
+    if (!filePath) {
+        return res.status(404).json({
+            source: 'api',
+            error: 'Avatar not found',
+            employeeId
+        });
+    }
+
+    res.sendFile(filePath);
+}
 
 function getByEmployeeId(req, res, next) {
     const employeeId = (req.params.employeeId || '').trim();

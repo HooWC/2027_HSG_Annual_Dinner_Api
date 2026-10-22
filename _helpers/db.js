@@ -7,7 +7,7 @@ if (process.env.DB_SERVER) {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         server: process.env.DB_SERVER,
-        pool: { max: 40, min: 2, idleTimeoutMillis: 30000 },
+        pool: { max: 50, min: 2, idleTimeoutMillis: 30000 },
         connectionTimeout: parseInt(process.env.DB_CONNECTION_TIMEOUT, 10) || 30000,
         requestTimeout: parseInt(process.env.DB_REQUEST_TIMEOUT, 10) || 180000,
         options: {
@@ -26,7 +26,7 @@ if (process.env.DB_SERVER) {
         password: dbConfig.authentication.options.password,
         database: dbName,
         server: dbConfig.server,
-        pool: { max: 40, min: 2, idleTimeoutMillis: 30000 },
+        pool: { max: 50, min: 2, idleTimeoutMillis: 30000 },
         connectionTimeout: fileOpts.connectionTimeout != null ? fileOpts.connectionTimeout : 30000,
         requestTimeout: fileOpts.requestTimeout != null ? fileOpts.requestTimeout : 180000,
         options: {

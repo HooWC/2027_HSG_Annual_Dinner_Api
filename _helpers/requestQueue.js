@@ -1,15 +1,28 @@
 /**
- * Limits concurrent request handlers so many scanners do not overwhelm SQL pool.
+ * Limits how many scan lookups / check-ins hit SQL at once.
+ * Extra requests wait in memory instead of opening unlimited DB connections.
  */
 class RequestQueue {
-    constructor(concurrency = 25) {
+    constructor(concurrency = 20, maxQueue = 400) {
         this.concurrency = Math.max(1, concurrency);
+        this.maxQueue = Math.max(this.concurrency, maxQueue);
         this.running = 0;
         this.queue = [];
     }
 
+    get pending() {
+        return this.queue.length;
+    }
+
     run(task) {
         return new Promise((resolve, reject) => {
+            if (this.running + this.queue.length >= this.maxQueue) {
+                const err = new Error('Server is busy. Please scan again in a moment.');
+                err.status = 503;
+                reject(err);
+                return;
+            }
+
             this.queue.push({ task, resolve, reject });
             this._drain();
         });
@@ -27,9 +40,16 @@ class RequestQueue {
 
                 res.on('finish', done);
                 res.on('close', done);
-
                 next();
-            })).catch(next);
+            })).catch((err) => {
+                if (res.headersSent) {
+                    return;
+                }
+                res.status(err.status || 500).json({
+                    source: 'api',
+                    error: err.message || 'Request failed'
+                });
+            });
         };
     }
 
